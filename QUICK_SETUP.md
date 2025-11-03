@@ -48,6 +48,23 @@ That's it! No LSP installation required.
 
 5. Enter `1` or `2` to select a component, or `3` to cancel
 
+6. The command will:
+   - Find the 'assets' parent directory in your file path
+   - Construct the bat file path: `<assets_path>\hotReload\genhotfix.bat`
+   - Print and execute the complete command
+   - Show execution results
+
+**Example full output when selecting cellapp:**
+```
+Executing cellapp for: example_python_file.UserManager.add_user
+
+Executing command:
+"E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat" cellapp example_python_file UserManager add_user
+
+Command executed successfully!
+[Output from bat file]
+```
+
 ## How It Works
 
 The command uses **simple regex parsing** to find:

@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-11-03
+
+### Added
+- **Assets Directory Detection**: Automatically finds 'assets' parent directory in file path
+- **Bat File Execution**: Constructs and executes bat file with full parameters
+- **Command Construction**: Builds command with format: `"<bat_path>" <component> <module> <class> <function>`
+- **Command Execution**: Uses `vim.fn.system()` to execute bat files
+- **Execution Display**: Prints complete command before execution for transparency
+- **Path Normalization**: Converts to Windows-style paths (backslashes)
+- **Error Handling**:
+  - Assets directory not found error
+  - Command execution failure detection
+  - Detailed error output display
+
+### Changed
+- Enhanced component selection to trigger actual bat file execution
+- Refactored command flow to include asset detection and execution steps
+
+### Technical Details
+- Searches for 'assets' directory in current file path using `vim.fn.expand("%:p")`
+- Constructs bat file path: `<assets_path>\hotReload\genhotfix.bat`
+- Uses `vim.v.shell_error` to check execution status
+- Displays both stdout and stderr from bat file execution
+
+### Output Format
+**Example successful execution:**
+```
+Executing cellapp for: example_python_file.UserManager.add_user
+
+Executing command:
+"E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat" cellapp example_python_file UserManager add_user
+
+Command executed successfully!
+[Bat file output]
+```
+
 ## [1.1.0] - 2025-11-03
 
 ### Added

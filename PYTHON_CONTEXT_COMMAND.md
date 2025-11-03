@@ -29,7 +29,13 @@ The command uses **simple regex parsing** to identify Python context at your cur
      3. Cancel
    ```
 
-3. **Execute Action**: Based on your selection, executes the corresponding action
+3. **Execute Action**: Based on your selection:
+   - Searches for 'assets' parent directory in the current file path
+   - Constructs full path to bat file: `<assets_path>\hotReload\genhotfix.bat`
+   - Builds complete command: `"<bat_path>" <component> <module> <class> <function>`
+   - Prints the complete command
+   - Executes the command
+   - Displays execution results
 
 ### Simple Parsing Approach
 
@@ -38,6 +44,61 @@ The current implementation uses pattern matching to find:
 - Function definitions: `def function_name():`
 
 It searches backwards from your cursor position to find the closest enclosing class and function.
+
+## Command Execution Details
+
+### Assets Directory Detection
+
+The command automatically searches for a parent directory named `assets` in the current file's path:
+
+1. **Path Traversal**: Scans through directory components from the current file
+2. **Asset Detection**: Identifies the 'assets' directory
+3. **Path Construction**: Reconstructs the full path up to and including 'assets'
+4. **Path Normalization**: Converts to Windows-style paths (backslashes)
+
+**Example Path Detection:**
+```
+Current file: E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\scripts\cell\test.py
+                                 ↑──────────────────────────────────────────↑
+                                 Assets path identified here
+```
+
+### Bat File Path Construction
+
+The command constructs the bat file path as:
+```
+<assets_path>\hotReload\genhotfix.bat
+```
+
+**Example:**
+```
+E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat
+```
+
+### Command Construction
+
+The final command format is:
+```bash
+"<bat_file_path>" <component> <module> <class> <function>
+```
+
+**Example:**
+```bash
+"E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat" cellapp test UserManager add_user
+```
+
+### Execution Flow
+
+1. **Print Command**: Displays the complete command before execution
+2. **Execute**: Uses `vim.fn.system()` to run the command
+3. **Result Check**: Checks `vim.v.shell_error` for execution status
+4. **Output Display**: Shows command output and results
+
+### Error Handling
+
+- **Assets not found**: Shows error and returns early
+- **Execution failure**: Displays error output from bat file
+- **Invalid choice**: Shows error message and re-prompts
 
 ## Example
 
@@ -71,16 +132,39 @@ Enter your choice (1-3):
 **If you choose `1` (cellapp):**
 ```
 Executing cellapp for: example_python_file.UserManager.add_user
+
+Executing command:
+"E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat" cellapp example_python_file UserManager add_user
+
+Command executed successfully!
+[bat file output]
 ```
 
 **If you choose `2` (baseapp):**
 ```
 Executing baseapp for: example_python_file.UserManager.add_user
+
+Executing command:
+"E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat" baseapp example_python_file UserManager add_user
+
+Command executed successfully!
+[bat file output]
 ```
 
 **If you choose `3` (Cancel):**
 ```
 Operation cancelled
+```
+
+**If assets directory is not found:**
+```
+Error: Could not find 'assets' parent directory in file path
+```
+
+**If command execution fails:**
+```
+Error executing command:
+[Error details]
 ```
 
 **If you enter an invalid choice:**

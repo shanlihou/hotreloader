@@ -60,6 +60,12 @@ Type `1` and press Enter.
 **Output:**
 ```
 Executing cellapp for: example_python_file.UserManager.add_user
+
+Executing command:
+"E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat" cellapp example_python_file UserManager add_user
+
+Command executed successfully!
+[Bat file output]
 ```
 
 **Option 2 - Execute Baseapp:**
@@ -69,6 +75,12 @@ Type `2` and press Enter.
 **Output:**
 ```
 Executing baseapp for: example_python_file.UserManager.add_user
+
+Executing command:
+"E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat" baseapp example_python_file UserManager add_user
+
+Command executed successfully!
+[Bat file output]
 ```
 
 **Option 3 - Cancel:**
@@ -127,6 +139,78 @@ Select a component to execute:
 
 Enter your choice (1-3): 1
 Executing cellapp for: example.DatabaseManager.connect
+```
+
+## Technical Flow
+
+### Step 1: Assets Directory Detection
+
+The command searches for the 'assets' directory in your file path:
+
+**Example File Path:**
+```
+E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\scripts\cell\UserManager.py
+                                       ↑
+                                 This is found and used
+```
+
+**Detection Process:**
+1. Extracts current file path: `vim.fn.expand("%:p")`
+2. Splits path into components
+3. Searches for directory named "assets"
+4. Reconstructs path up to and including "assets"
+
+**Result:**
+```
+assets_path = E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets
+```
+
+### Step 2: Bat File Path Construction
+
+Constructs full path to the bat file:
+
+```lua
+bat_file_path = assets_path .. "/hotReload/genhotfix.bat"
+-- Converts to: E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat
+```
+
+### Step 3: Command Construction
+
+Builds the complete command with all parameters:
+
+```lua
+full_command = string.format('"%s" %s %s %s %s',
+  bat_file_path,      -- Quoted path to bat file
+  component_name,     -- "cellapp" or "baseapp"
+  modName,            -- Module name from filename
+  className,          -- Class name from cursor
+  funcName            -- Function name from cursor
+)
+```
+
+**Example Result:**
+```
+"E:\shsvn\h1_trunk\Dev\Server\kbeLinux\kbengine\assets\hotReload\genhotfix.bat" cellapp UserManager add_user UserManager.py
+```
+
+### Step 4: Execution
+
+1. **Print Command**: Displays the full command for transparency
+2. **Execute**: Runs via `vim.fn.system(full_command)`
+3. **Check Result**: Uses `vim.v.shell_error` to check success/failure
+4. **Display Output**: Shows command output and execution status
+
+### Error Scenarios
+
+**Assets Directory Not Found:**
+```
+Error: Could not find 'assets' parent directory in file path
+```
+
+**Command Execution Failed:**
+```
+Error executing command:
+[Error output from bat file]
 ```
 
 ## Key Features

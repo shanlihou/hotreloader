@@ -21,6 +21,13 @@ Python Context (simple):
   Module: my_module
   Class: UserManager
   Function: add_user
+
+Select a component to execute:
+  1. cellapp
+  2. baseapp
+  3. Cancel
+
+Enter your choice (1-3):
 ```
 
 ### 2. Hot-Reload Functionality (Planned)

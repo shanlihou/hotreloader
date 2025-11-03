@@ -37,7 +37,16 @@ That's it! No LSP installation required.
      Module: example_python_file
      Class: UserManager
      Function: add_user
+
+   Select a component to execute:
+     1. cellapp
+     2. baseapp
+     3. Cancel
+
+   Enter your choice (1-3):
    ```
+
+5. Enter `1` or `2` to select a component, or `3` to cancel
 
 ## How It Works
 

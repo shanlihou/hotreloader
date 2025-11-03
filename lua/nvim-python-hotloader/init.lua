@@ -54,8 +54,34 @@ local function get_python_context_simple()
   print(string.format("  Module: %s", modName))
   print(string.format("  Class: %s", className))
   print(string.format("  Function: %s", funcName))
+  print()
 
   vim.notify(string.format("M:%s | C:%s | F:%s", modName, className, funcName), vim.log.levels.INFO)
+
+  -- Prompt user to select a component
+  print("Select a component to execute:")
+  print("  1. cellapp")
+  print("  2. baseapp")
+  print("  3. Cancel")
+  print()
+
+  -- Get user input
+  local choice = vim.fn.input("Enter your choice (1-3): ")
+
+  -- Handle user selection
+  if choice == "1" then
+    print(string.format("Executing cellapp for: %s.%s.%s", modName, className, funcName))
+    vim.notify("Cellapp execution triggered", vim.log.levels.INFO)
+  elseif choice == "2" then
+    print(string.format("Executing baseapp for: %s.%s.%s", modName, className, funcName))
+    vim.notify("Baseapp execution triggered", vim.log.levels.INFO)
+  elseif choice == "3" then
+    print("Operation cancelled")
+    vim.notify("Operation cancelled", vim.log.levels.WARN)
+  else
+    print("Invalid choice. Please enter 1, 2, or 3.")
+    vim.notify("Invalid choice selected", vim.log.levels.ERROR)
+  end
 end
 
 M.setup = function(opts)

@@ -12,11 +12,24 @@ This plugin includes a command that retrieves Python context information (module
 
 ## How It Works
 
-The command uses **simple regex parsing** to identify Python context at your cursor position. It analyzes:
+The command uses **simple regex parsing** to identify Python context at your cursor position. It then prompts you to select a component to execute.
 
-1. **Module Name**: The filename (without extension) of the current Python file
-2. **Class Name**: The name of the class containing your cursor (if applicable)
-3. **Function Name**: The name of the function/method containing your cursor
+### Process Flow
+
+1. **Detect Context**: Analyzes your cursor position to find:
+   - **Module Name**: The filename (without extension) of the current Python file
+   - **Class Name**: The name of the class containing your cursor (if applicable)
+   - **Function Name**: The name of the function/method containing your cursor
+
+2. **Interactive Selection**: Prompts you to choose a component:
+   ```
+   Select a component to execute:
+     1. cellapp
+     2. baseapp
+     3. Cancel
+   ```
+
+3. **Execute Action**: Based on your selection, executes the corresponding action
 
 ### Simple Parsing Approach
 
@@ -37,13 +50,42 @@ class UserManager:
         self.users.append(username)
 ```
 
-When you place your cursor on line 3 and run `:PythonContext`, you'll get:
+When you place your cursor on line 3 and run `:PythonContext`, you'll see:
 
 ```
 Python Context (simple):
   Module: example_python_file
   Class: UserManager
   Function: add_user
+
+Select a component to execute:
+  1. cellapp
+  2. baseapp
+  3. Cancel
+
+Enter your choice (1-3):
+```
+
+### Example Interaction
+
+**If you choose `1` (cellapp):**
+```
+Executing cellapp for: example_python_file.UserManager.add_user
+```
+
+**If you choose `2` (baseapp):**
+```
+Executing baseapp for: example_python_file.UserManager.add_user
+```
+
+**If you choose `3` (Cancel):**
+```
+Operation cancelled
+```
+
+**If you enter an invalid choice:**
+```
+Invalid choice. Please enter 1, 2, or 3.
 ```
 
 ## Requirements

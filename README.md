@@ -1,8 +1,29 @@
 # nvim-python-hotloader
 
-A Neovim plugin for hot-reloading Python code. This plugin automatically detects changes to Python files and reloads them without requiring a full restart, improving development workflow.
+A Neovim plugin for Python development with LSP-powered context detection and hot-reload functionality.
 
 ## Features
+
+### 1. Python Context Detection (PythonContext Command)
+
+- **Lightweight**: Simple regex-based parsing, no LSP required
+- **Fast**: Instant results without waiting for server responses
+- **Smart**: Identifies module, class, and function at cursor position
+- **Reliable**: Works in any environment without dependencies
+
+```vim
+:PythonContext
+```
+
+**Output:**
+```
+Python Context (simple):
+  Module: my_module
+  Class: UserManager
+  Function: add_user
+```
+
+### 2. Hot-Reload Functionality (Planned)
 
 - Automatic Python file change detection
 - Hot-reload functionality for Python modules
@@ -15,11 +36,9 @@ A Neovim plugin for hot-reloading Python code. This plugin automatically detects
 ```lua
 {
   'your-username/nvim-python-hotloader',
-  -- Optional configuration
   config = function()
     require('nvim-python-hotloader').setup({
-      -- Configure options here
-      auto_reload = true,
+      auto_reload = true,  -- Enable when hot-reload is implemented
     })
   end,
 }
@@ -36,11 +55,54 @@ use {
 }
 ```
 
+## Quick Start
+
+### 1. Install Pyright LSP
+
+**Using Mason:**
+```vim
+:MasonInstall pyright
+```
+
+**Or install globally:**
+```bash
+npm install -g pyright
+```
+
+### 2. Configure LSP
+
+```lua
+-- Minimal setup
+require('lspconfig').pyright.setup({})
+
+-- Load the plugin
+require('nvim-python-hotloader').setup()
+```
+
+### 3. Use the Command
+
+```vim
+:edit demo.py
+:PythonContext  -- Place cursor in a function first!
+```
+
 ## Requirements
 
-- Neovim (latest stable or nightly)
-- Lua 5.1 or later
-- Python 3.x
+- **Neovim** 0.8+ (for built-in LSP support)
+- **Lua** 5.1 or later
+- **Python** 3.x
+- **Pyright** LSP server (recommended for best results)
+
+## Documentation
+
+- **[Quick Setup Guide](QUICK_SETUP.md)** - Get started in 5 minutes
+- **[PythonContext Command](PYTHON_CONTEXT_COMMAND.md)** - Detailed documentation
+- **[Configuration Example](lua/nvim-python-hotloader/example_config.lua)** - Complete setup with keybindings
+
+## Example Files
+
+- `demo.py` - Comprehensive Python examples for testing
+- `example_python_file.py` - Simple examples to get started
 
 ## License
 

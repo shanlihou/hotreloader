@@ -1,10 +1,8 @@
 rockspec_format = '3.0'
--- TODO: Rename this file and set the package
-package = "nvim-lua-plugin"
+package = "nvim-python-hotloader"
 version = "scm-1"
 source = {
-  -- TODO: Update this URL
-  url = "git+https://github.com/nvim-lua/nvim-lua-plugin-template"
+  url = "git+https://github.com/your-username/nvim-python-hotloader"
 }
 dependencies = {
   -- Add runtime dependencies here

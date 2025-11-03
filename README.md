@@ -1,47 +1,52 @@
-# nvim-lua-plugin-template
+# nvim-python-hotloader
 
-This repository is a template for Neovim plugins written in Lua.
+A Neovim plugin for hot-reloading Python code. This plugin automatically detects changes to Python files and reloads them without requiring a full restart, improving development workflow.
 
-The intention is that you use this template to create a new repository where you then adapt this readme and add your plugin code.
-The template includes the following:
+## Features
 
-- GitHub workflows and configurations to run linters and tests
-- Packaging of tagged releases and upload to [LuaRocks][luarocks]
-  if a [`LUAROCKS_API_KEY`][luarocks-api-key] is added
-  to the [GitHub Actions secrets][gh-actions-secrets]
-- Minimal test setup:
-  - A `scm` [rockspec][rockspec-format], `nvim-lua-plugin-scm-1.rockspec`
-  - A `.busted` file
-- EditorConfig
-- A .luacheckrc
+- Automatic Python file change detection
+- Hot-reload functionality for Python modules
+- Seamless integration with Neovim workflows
 
+## Installation
 
-To get started writing a Lua plugin, I recommend reading `:help lua-guide` and
-`:help write-plugin`.
+### Using lazy.nvim
 
-## Scope
+```lua
+{
+  'your-username/nvim-python-hotloader',
+  -- Optional configuration
+  config = function()
+    require('nvim-python-hotloader').setup({
+      -- Configure options here
+      auto_reload = true,
+    })
+  end,
+}
+```
 
-Anything that the majority of plugin authors will want to have is in scope of
-this starter template. Anything that is controversial is out-of-scope.
+### Using Packer
 
-## Usage
+```lua
+use {
+  'your-username/nvim-python-hotloader',
+  config = function()
+    require('nvim-python-hotloader').setup()
+  end
+}
+```
 
-- Click [Use this template][use-this-template]. Do not fork.
-- Rename `nvim-lua-plugin-scm-1.rockspec` and change the `package` name
-  to the name of your plugin.
+## Requirements
 
-## Template License
+- Neovim (latest stable or nightly)
+- Lua 5.1 or later
+- Python 3.x
 
-The template itself is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
-The template doesn't include a LICENSE file. You should add one after creating your repository.
+## License
+
+MIT License
 
 ---
-
-
-The remainder of the README is text that can be preserved in your plugin:
-
----
-
 
 ## Development
 
@@ -90,4 +95,3 @@ luarocks commands above.
 [gh-actions-secrets]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository
 [busted]: https://lunarmodules.github.io/busted/
 [nlua]: https://github.com/mfussenegger/nlua
-[use-this-template]: https://github.com/new?template_name=nvim-lua-plugin-template&template_owner=nvim-lua
